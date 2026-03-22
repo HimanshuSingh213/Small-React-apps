@@ -1,15 +1,14 @@
 import mongoose from "mongoose";
 
-if (!process.env.MongoDB_URI) {
-    throw new Error("MongoDB URI env not defined.")
-}
-
 let cached = global.mongoose;
 
 if (!cached) cached = global.mongoose = { conn: null, promise: null }
 
 export default async function dbConnect() {
 
+    if (!process.env.MONGODB_URI) {
+        throw new Error("MongoDB URI env not defined.")
+    }
     if (cached.conn) return cached.conn;
 
     if (!cached.promise) {

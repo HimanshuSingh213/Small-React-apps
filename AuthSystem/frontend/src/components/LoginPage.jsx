@@ -8,20 +8,21 @@ export default function LoginPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [message, setmessage] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/dashboard");
-    }
-  }, []);
 
   const handleSubmit = async () => {
 
     setError("");
+
+    if(mode === "signup" && password !== confirmPassword){
+      setError("Password Mismatch.");
+      return;
+    }
+
     if (!email || !password) {
       setError("All fields required");
       return;
@@ -38,15 +39,21 @@ export default function LoginPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          body: JSON.stringify({
-            email,
-            password,
-            name,
-          })
-        }
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          name,
+        })
+
       });
 
       const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Something went wrong. Please try again.");
+        return;
+      }
 
       if (mode === "login") {
         // save token
@@ -64,6 +71,10 @@ export default function LoginPage() {
     }
     finally {
       setLoading(false);
+      setConfirmPassword("");
+      setPassword("");
+      setEmail("");
+      setName("");
     }
 
   }
@@ -186,6 +197,8 @@ export default function LoginPage() {
               <input
                 placeholder="Confirm Password"
                 type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full h-11 px-4 bg-gray-100 rounded-xl outline-none border border-transparent focus:border-[#f97316] transition-all"
               />
             )}

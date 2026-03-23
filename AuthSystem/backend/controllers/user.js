@@ -37,7 +37,7 @@ export const handleUserLogin = async (req, res) => {
 
         //  checking the password
         const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
-        if(!isPasswordCorrect) res.status(400).json({message: "Invalid email/password"})
+        if(!isPasswordCorrect) return res.status(400).json({message: "Invalid email/password"})
 
         // generating token that will be saved by frontend in localstorage
         const token = jwt.sign({id: existingUser._id }, process.env.JWT_SECRET, {expiresIn: "2h"});

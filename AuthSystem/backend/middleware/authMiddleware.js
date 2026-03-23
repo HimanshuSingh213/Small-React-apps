@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 export async function authMiddleware(req, res, next) {
     try {
         // check for token sent from frontend
-        const token = req.headers.authorization?.split("")[1];
+        const token = req.headers.authorization?.split(" ")[1];
         
         if(!token) return res.status(401).json({message: "Unauthorized access"})
 

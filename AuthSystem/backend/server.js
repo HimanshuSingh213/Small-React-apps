@@ -17,7 +17,7 @@ app.use("/", authRoutes);
 
 app.get("/dashboard", authMiddleware, (req, res) => {
     res.json({ message: "Welcome to dashboard", user: req.user });
-})
+});
 
 dbConnect()
     .then(() => {

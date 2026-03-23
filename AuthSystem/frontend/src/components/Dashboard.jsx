@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import VideoPlayer from './Video';
 
 function Dashboard() {
     const navigate = useNavigate();
@@ -48,9 +49,9 @@ function Dashboard() {
                 <p className="text-red-500">{error}</p>
             ) : (
                 <>
+                    <VideoPlayer/>
                     {/* Display the message sent from the backend */}
                     <p className="text-green-400">{userData ? userData.message : "Loading backend data..."}</p>
-                    <p>Simon Go Back!!!</p>
                 </>
             )}
             <button
